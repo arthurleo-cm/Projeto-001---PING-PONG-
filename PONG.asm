@@ -13,10 +13,12 @@ scanCode db 0
 caracterRepeticao dw 1
 dlin db 1
 dcol db 1
+
 raqueteCol db 2 
 raqueteLin db 2
 raqueteTam dw 18
 caracterCor db 28h
+
 cont db 0
 
 linhaSUP db 0
@@ -104,6 +106,7 @@ loopX2:
     jne loopX2
   
 loopX3:
+    ;CRIANDO A LINHA SUPERIOR ESQUERDA 
      mov ah,02h
     mov bh,paginaVideo
     mov dh,linhaSESQ
@@ -124,6 +127,7 @@ loopX3:
 
 
 loopX4:
+    ;CRIANDO LINHA INFERIOR ESQUEDA PARA
     mov ah,02h
     mov bh,paginaVideo
     mov dh,linhaIESQ
@@ -161,6 +165,7 @@ loopX5:
      jne loopX5
      
  loopX6:
+     ;CRIANDO A LINHA INFERIOR NA DIREITA
      mov ah,02h
     mov bh,paginaVideo
     mov dh,linhaIDIR
