@@ -16,7 +16,12 @@ dcol db 1
 
 raqueteCol db 2 
 raqueteLin db 2
-raqueteTam dw 18
+raqueteTam dw 10
+
+raqueteCol2 db 2 
+raqueteLin2 db 2
+raqueteTam2 dw 10
+
 caracterCor db 28h
 
 cont db 0
@@ -50,8 +55,8 @@ main:
      mov cursorLin,5
     mov cursorCol,10
     
-    mov raqueteLin,18
-    mov raqueteCol,20
+    mov raqueteLin,12
+    mov raqueteCol,63
     
     mov dcol,1
     mov dlin,1   
@@ -127,7 +132,7 @@ loopX3:
 
 
 loopX4:
-    ;CRIANDO LINHA INFERIOR ESQUEDA PARA
+    ;CRIANDO LINHA INFERIOR ESQUEDA PARA FORMAR OS PONTOS
     mov ah,02h
     mov bh,paginaVideo
     mov dh,linhaIESQ
@@ -184,10 +189,7 @@ loopX5:
     jne loopX6
     
 loop:
-    
-    
-    
-  
+   
     
       ;POSICIONAR O CURSO
       mov bh,paginaVideo
@@ -195,27 +197,29 @@ loop:
       mov dl,cursorCol
       mov ah,02h   
       int 10h
-
-      mov al,"*"
+      ;POSICIONANDO A BOLINHA 
+     mov al,"*"
      mov bh,paginaVideo
      mov cx,caracterRepeticao
      mov ah,0Ah  
      int 10h 
      
-  
+
+
+
      ; COLOCANDO A RAQUETE
-     mov ah,02h
-    mov bh,paginaVideo
-    mov dh,raqueteLin
+      mov ah,02h
+     mov bh,paginaVideo
+     mov dh,raqueteLin
     mov dl,raqueteCol
     int 10h
     
-    mov al,"_"
+    mov al,"|"
      mov bh,paginaVideo
      mov cx,raqueteTam
-     mov bl,31h
-     mov ah,0Ah  
-     int 10h 
+    mov bl,31h
+      mov ah,0Ah  
+      int 10h 
      
      mov ah,10h
      int 16h
@@ -254,19 +258,20 @@ loop:
      int 10h 
      
      ;MOVER RAQUETE ESQUERDA
-     cmp tecla,","
+     cmp tecla,"o"
      jnz desvioraquete001
      cmp raqueteCol,0
      je  desvioraquete001
-     dec raqueteCol
+     dec raqueteLin;aqui
      
  desvioraquete001:
      ;MOVER RAQUETE DIREITA
-     cmp tecla,"."
+     cmp tecla,"l"
      jnz desvioraquete002
      cmp raqueteCol,60
      je desvioraquete002 
-     inc raqueteCol
+     inc raqueteLin ;aqui
+     
      
      
  desvioraquete002:    
@@ -326,38 +331,47 @@ desvio6:
    
     ;COMPARAR LIMITES
     ;LIMITE LINHA INFERIOR
-    cmp cursorLin,23
+    cmp cursorLin,22
     jbe desvio1
     mov dlin,-1
     
     desvio1:  
    
     ;LIMITE COLUNA DIREITA
-    cmp cursorCol,78
+    cmp cursorCol,77
     jbe desvio2
     mov dcol, -1
     
     desvio2:
     
     ;LIMITE  COLUNA ESQUEDA
-    cmp cursorCol,1
+    cmp cursorCol,2
     jae desvio3
     mov dcol, 1
     
 desvio3:
     ;LIMITE LINHA 0
-    cmp cursorLin,1
+    cmp cursorLin,2
     jae desvio4
     mov dlin,1
     
 desvio4:
     
-    
-    
-    
+ 
+  
+  
+  
+  
+  
+  
+  
+   
     
     
 jmp loop
+
+
+
   
 
 
