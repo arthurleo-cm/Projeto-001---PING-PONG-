@@ -210,10 +210,11 @@ loopX5:
     
 loop:
     
-  
-    ; PLACAR COME?ANDO COM 0 TANTO O DA ESQUERDA E DA DIREITA
+    ; =========================
+; MOSTRAR PLACAR
+; =========================
 
-    ;JOGADOR ESQUERDO
+; jogador esquerdo
 mov ah,02h
 mov bh,0
 mov dh,1
@@ -225,7 +226,7 @@ add al,'0'
 mov ah,0Eh
 int 10h
 
-    ;JOGADOR DIREITO
+; jogador direito
 mov ah,02h
 mov bh,0
 mov dh,1
@@ -236,8 +237,24 @@ mov al,pontoDIR
 add al,'0'
 mov ah,0Eh
 int 10h
-
-      ;POSICIONAR O CURSO(QUE ? A BOLINHA)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      ;POSICIONAR O CURSO
       mov bh,paginaVideo
       mov dh,cursorLin
       mov dl,cursorCol
@@ -249,13 +266,13 @@ int 10h
      mov cx,caracterRepeticao
      mov ah,0Ah  
      int 10h 
-     ;RAQUETE 1    
+     
 loop_raquete1:
 
     mov cl,raqueteTam
     mov ch,0
     
-    mov dh,raqueteLin   
+    mov dh,raqueteLin   ; s? aqui, fora do loop
 
 raquete1:
     push cx
@@ -266,7 +283,7 @@ raquete1:
     int 10h
 
     mov al,"|"
-    mov ah,09h          
+    mov ah,09h          ; ? desenha 1 caractere
     mov bh,0
     mov bl,1eh 
     mov cx,1
@@ -280,41 +297,41 @@ raquete1:
      
     
 
-    ;RAQUETE 2   
+     
  loop_raquete2: 
    ;COLOCANDO A RAQUETE 2
-    mov cl,raqueteTam2
-    mov ch,0
+   mov cl,raqueteTam2
+mov ch,0
    
-    mov dh,raqueteLin2   
+    mov dh,raqueteLin2   ; s? aqui, fora do loop
 
 raquete2:
     push cx
 
     mov ah,02h
     mov bh,paginaVideo
-    mov dl,raqueteCol2 
+    mov dl,raqueteCol2 ; coluna fixa
     int 10h
 
     mov al,"|"
-    mov ah,09h         
+    mov ah,09h          ; ? desenha 1 caractere
     mov bh,0
     mov bl,1eh 
     mov cx,1
     int 10h
 
-    inc dh              
+    inc dh              ; ? desce uma linha
 
     pop cx
     loop raquete2  
      
-    ;LENDO TECLA
-    mov ah,10h
-    int 16h
-    mov tecla,al
-    mov scanCode,ah
-
-    ; APAGAR RASTRO DA BOLINHA
+     
+      mov ah,10h
+     int 16h
+     mov tecla,al
+     mov scanCode,ah
+     
+; APAGAR BOLINHA
 
     mov ah,02h
     mov bh,paginaVideo
@@ -328,10 +345,13 @@ raquete2:
     mov ah,0Ah
     int 10h
      
+     
+     
+     
     mov cl,raqueteTam
-    mov ch,0
+mov ch,0
     mov dh,raqueteLin
-    ;APAGAT A RAQUETE 1
+
 apaga_r1:
     push cx
 
@@ -352,11 +372,12 @@ apaga_r1:
     pop cx
     loop apaga_r1
      
-     
+     ;APAGANDO RAQUETE 2
      mov cl,raqueteTam2
-     mov ch,0
-     mov dh,raqueteLin2
-;APAGANDO RAQUETE 2
+mov ch,0
+     
+      mov dh,raqueteLin2
+
 apaga_r2:
     push cx
 
@@ -376,33 +397,35 @@ apaga_r2:
 
     pop cx
     loop apaga_r2
- 
      
      
-    ;MOVENDO RAQUETE O PRA CIMA
+     
+     
+     
+     
+     
+     
+     
+ ;MOVENDO RAQUETE PRA CIMA
      
  cmp tecla,"o"
  jnz mover_baixo_r2 
  cmp raqueteLin2,2 
  je  mover_baixo_r2
  dec raqueteLin2
- ;MOVENDO RAQUETE 2 PRA BAIXO  
+    
 mover_baixo_r2:
-  
+   ;MOVER RAQUETE PRA BAIXO
    cmp tecla,"l"
      jnz fim_r2
-     
-    mov al,raqueteLin2
-    add al,raqueteTam2
-    cmp al,22
-    jae fim_r2
-     
+     cmp raqueteLin2,21
+     je fim_r2
      inc raqueteLin2
      
      
 fim_r2:    
      
-     ;MOVER RAQUETE PRA CIMA
+     ;MOVER RAQUETE ESQUERDA
      cmp tecla,"w"
      jnz mover_baixo_r1
      cmp raqueteLin,2
@@ -410,66 +433,64 @@ fim_r2:
      dec raqueteLin
      
  mover_baixo_r1:
-     ;MOVER RAQUETE PRA BAIXO
+     ;MOVER RAQUETE DIREITA
      cmp tecla,"s"
      jnz fim_r1
-    mov al,raqueteLin
-    add al,raqueteTam
-    cmp al,22        
-    jae fim_r1
-     
+     cmp raqueteLin,23
+     je fim_r1 
      inc raqueteLin
      
      
  fim_r1:    
-    
-    
-     ;COLIS?O RAQUETE ESQUERDA
-
+     ;TESTAR MOVIMENTO BOLINHA RAQUETE
+     
+ ; =========================
+; COLIS?O RAQUETE ESQUERDA
+; =========================
 
 mov al,cursorCol
 mov bl,raqueteCol
 inc bl
 cmp al,bl
-jne coli_r2
+jne col_r2
 
 mov al,cursorLin
 mov bl,raqueteLin
 cmp al,bl
-jb coli_r2
+jb col_r2
 
 mov bl,raqueteLin
 add bl,raqueteTam
 cmp al,bl
-ja coli_r2
+ja col_r2
 
 mov dcol,1
 
 
-
+; =========================
 ; COLIS?O RAQUETE DIREITA
-
-coli_r2:
+; =========================
+col_r2:
 
 mov al,cursorCol
 mov bl,raqueteCol2
 dec bl
 cmp al,bl
-jne fimdacolisao
+jne fim_colisao
 
 mov al,cursorLin
 mov bl,raqueteLin2
 cmp al,bl
-jb fimdacolisao
+jb fim_colisao
 
 mov bl,raqueteLin2
 add bl,raqueteTam2
 cmp al,bl
-ja fimdacolisao
+ja fim_colisao
 
 mov dcol,-1
 
-fimdacolisao:
+fim_colisao:
  
  
        
@@ -544,6 +565,7 @@ jmp loop
     mov dlin,1
 
     ret 
+
 
 sairPrograma:
 
